@@ -2,12 +2,13 @@ const { Pool } = require('pg');
 require('dotenv').config();
 
 const pool = new Pool({
-    user: 'postgres',
-    host: '127.0.0.1',
-    database: 'litethinking',
-    password: 'postgres',
-    port: 5432,
-});
+    connectionString: process.env.DATABASE_URL
+  });
+  
+  pool.connect()
+    .then(() => console.log('Connected to the database'))
+    .catch(err => console.error('Error connecting to the database:', err));
+  
 
 module.exports = {
     query: (text, params) => pool.query(text, params),

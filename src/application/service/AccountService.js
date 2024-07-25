@@ -1,3 +1,5 @@
+const Account  = require('../../domain/model/Account');
+
 class AccountService {
     constructor(accountRepository) {
         this.accountRepository = accountRepository;

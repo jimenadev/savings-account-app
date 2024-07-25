@@ -1,15 +1,24 @@
-version: '3.8'
+version: '3.7'
+
 services:
-  db:
+  database:
     image: postgres
-    restart: always
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydatabase
+      POSTGRES_PORT: 5432
     ports:
-      - '5432:5432'
-    volumes: 
-      - db:/var/lib/postgresql/data
-volumes:
-  db:
-    driver: local
+      - "5432:5432"
+  app:
+    build: .
+    volumes:
+      - .:/src
+      - /src/node_modules
+    working_dir: /src
+    environment:
+      DATABASE_URL: postgres://user:password@database:5432/mydatabase
+    depends_on:
+      - database
+    ports:
+      - "3000:3000" # Exponer el puerto 3000
